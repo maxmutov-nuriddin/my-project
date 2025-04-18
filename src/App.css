@@ -1,0 +1,43 @@
+@import "tailwindcss";
+form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin: 0 auto;
+}
+
+button {
+  padding: 10px;
+  margin: 20px 10px 0 0 !important;
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+.layout-span__text{
+  font-weight: bolder;
+}
+
+.custom-content {
+  color: white;
+  font-size: large;
+  font-family: cursive;
+  /* background: linear-gradient(135deg, #8e2de2, #4a00e0, #1c1cd9) !important; */
+  background-color: #111111 !important;
+}
+
+.login-box, .register-box, .layout-box{
+  background-color: #111111 !important;
+}
+
+.ant-menu-item-selected{
+    background-color: transparent !important;
+    text-shadow: 3px 3px 1px #9E101A;
+}
+
+.layout-box{
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}

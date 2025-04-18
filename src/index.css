@@ -1,0 +1,101 @@
+/* Для всех input в AntD */
+.ant_input,
+.ant__input__password input {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+/* Placeholder белый */
+.ant_input::placeholder,
+.ant__input__password input::placeholder {
+  color: white !important;
+  opacity: 1;
+}
+
+/* Иконка "показать пароль" */
+.ant__input__password .ant-input-suffix svg {
+  color: white !important;
+}
+
+html {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: cursive !important;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0;
+  background-color: #111111;
+}
+
+main {
+  flex-grow: 1;
+}
+
+button{
+  background-color: transparent;
+  border: none;
+  margin: 0 !important; 
+  background-color: #9E101A !important;
+}
+
+input{
+  border: none;
+  background-color: transparent;
+}
+
+img {
+  vertical-align: middle;
+  object-fit: cover;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+ol {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li, span{
+  font-family: cursive;
+}
+
+p {
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
