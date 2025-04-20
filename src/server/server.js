@@ -41,18 +41,44 @@ export const server = {
         }
     },
 
+    // getUserById: async (id) => {
+    //     try {
+    //         const response = await fetch(`${API_URL}/${id}`);
+    //         if (!response.ok) {
+    //             throw new Error(`Ошибка при получении пользователя с id=${id}: ${response.statusText}`);
+    //         }
+    //         return await response.json();
+    //     } catch (error) {
+    //         console.error("Ошибка при получении пользователя по ID:", error);
+    //         throw error;
+    //     }
+    // },
+
     getUserById: async (id) => {
         try {
             const response = await fetch(`${API_URL}/${id}`);
             if (!response.ok) {
                 throw new Error(`Ошибка при получении пользователя с id=${id}: ${response.statusText}`);
             }
-            return await response.json();
+
+            const user = await response.json();
+
+            if (!user) {
+                // Если пользователь не найден, очищаем localStorage
+                localStorage.removeItem('authToken');
+                console.log(`Пользователь с id=${id} не найден. LocalStorage очищен.`);
+            }
+
+            return user;
+
         } catch (error) {
             console.error("Ошибка при получении пользователя по ID:", error);
+            // Если ошибка, очищаем localStorage
+            localStorage.removeItem('authToken');
             throw error;
         }
     },
+
 
     deleteUser: async (id) => {
         try {
