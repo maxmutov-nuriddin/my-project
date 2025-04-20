@@ -134,8 +134,8 @@ function RegisterPage() {
               />
             </Form.Item>
 
-            <div className='flex'>
-              <Button type="primary" htmlType="submit">
+            <div className='flex items-center'>
+              <Button className='button' type="primary" htmlType="submit">
                 Зарегистрироваться
               </Button>
               <Button type="button" onClick={goToLogin} style={{ marginLeft: 10, color: "white" }}>

@@ -110,7 +110,7 @@ function LoginPage() {
 
             <Form.Item>
               <div className='login-box_button'>
-                <Button type="primary" htmlType="submit" className=''>
+                <Button className="button" type="primary" htmlType="submit">
                   Войти
                 </Button>
                 <Button type="button" onClick={handleRegister} style={{ marginLeft: 10, color: "white" }}>

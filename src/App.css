@@ -41,3 +41,7 @@ button {
   align-items: center;
   justify-content: end;
 }
+
+.button{ 
+  background-color: #9E101A !important;
+}
