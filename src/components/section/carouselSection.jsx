@@ -155,7 +155,7 @@ const CarouselSection = () => {
             className="group relative flex-[1_1_calc(33.333%-30px)] p-5 rounded-[28px] overflow-hidden bg-[#121212] transition-all cursor-pointer no-underline"
           >
             <a
-              href={course.link}
+              href={"https://" + course.link}
               target="_blank"
               rel="noopener noreferrer"
               className="block"
