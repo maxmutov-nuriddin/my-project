@@ -41,19 +41,6 @@ export const server = {
         }
     },
 
-    // getUserById: async (id) => {
-    //     try {
-    //         const response = await fetch(`${API_URL}/${id}`);
-    //         if (!response.ok) {
-    //             throw new Error(`Ошибка при получении пользователя с id=${id}: ${response.statusText}`);
-    //         }
-    //         return await response.json();
-    //     } catch (error) {
-    //         console.error("Ошибка при получении пользователя по ID:", error);
-    //         throw error;
-    //     }
-    // },
-
     getUserById: async (id) => {
         try {
             const response = await fetch(`${API_URL}/${id}`);
