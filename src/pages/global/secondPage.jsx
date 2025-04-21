@@ -26,20 +26,20 @@ const SecondPage = () => {
   }, [id]);
 
   console.log(data);
-  
+
 
   return (
     <div data-aos="zoom-in">
       <section>
         <div>
-          <img src="" alt="user image"/>
+          <img src="" alt="user image" />
         </div>
         <div>
           <span>
             {data ? `Hello Im ${data.user.firstName}` : 'Loading...'}
           </span>
           <div>
-
+            { data ? data.profile.TextArea : 'Loading...'}
           </div>
         </div>
       </section>
