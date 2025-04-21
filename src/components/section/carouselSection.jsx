@@ -1,165 +1,185 @@
-import React, { useState } from 'react';
-import { Button, Modal, Checkbox, Form, Input } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Modal, Form, Input } from 'antd';
 import { toast } from 'react-toastify';
-// import { Carousel } from 'antd';
+import { server } from '../../server/server';
+import Aos from 'aos';
 
 const CarouselSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data, setData] = useState(null);
+  const [editingItem, setEditingItem] = useState(null);
+  const [form] = Form.useForm();
 
-  const showModal = () => {
+  const id = localStorage.getItem('authToken');
+
+  const showModal = (item = null) => {
+    setEditingItem(item);
+    if (item) {
+      form.setFieldsValue({
+        name: item.name,
+        create: item.date,
+        link: item.link,
+      });
+    } else {
+      form.resetFields();
+    }
     setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
-  const onFinish = values => {
-    toast.success('Success:', values);
-  };
-
   const onFinishFailed = errorInfo => {
     toast.error('Failed:', errorInfo);
   };
 
-  const courses = [
-    {
-      title: "UI/Web & Graph design for teenagers 11-17 years old",
-      startDate: "04.11.2022",
-      link: "https://example.com/teenagers-design"
-    },
-    {
-      title: "UX/UI Web-Design + Mobile Design",
-      startDate: "04.11.2022",
-      link: "https://example.com/ux-ui-mobile"
-    },
-    {
-      title: "Annual package 'Product+UX/UI+Graph designer 2022'",
-      startDate: "04.11.2022",
-      link: "https://example.com/product-uxui-graph"
-    },
-    {
-      title: "Graphic Design",
-      startDate: "04.11.2022",
-      link: "https://example.com/graphic-design"
-    },
-    {
-      title: "Motion Design",
-      startDate: "30.11.2022",
-      link: "https://example.com/motion-design"
-    },
-    {
-      title: "Front-end development + jQuery + CMS",
-      startDate: null,
-      link: "https://example.com/frontend-jquery-cms"
-    },
-    {
-      title: "Digital Marketing",
-      startDate: null,
-      link: "https://example.com/digital-marketing"
-    },
-    {
-      title: "Interior Design",
-      startDate: "31.10.2022",
-      link: "https://example.com/interior-design"
+  useEffect(() => {
+    Aos.init();
+
+    const getUserDataId = async (id) => {
+      try {
+        const userId = await server.getUserById(id);
+        setData(userId);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+
+    if (id) {
+      getUserDataId(id);
     }
-  ];
+  }, [id]);
 
+  const handleSubmit = async (values) => {
+    if (!data) return;
 
-  const getBgColor = (index) => {
-    const colors = [
-      "#f9b234",
-      "#3ecd5e",
-      "#e44002",
-      "#952aff",
-      "#cd3e94",
-      "#4c49ea",
-    ];
-    return colors[index % colors.length];
+    let updatedPortfolio;
+    if (editingItem) {
+      updatedPortfolio = data.portfolio.map(item =>
+        item === editingItem
+          ? { name: values.name, date: values.create, link: values.link }
+          : item
+      );
+    } else {
+      updatedPortfolio = [
+        ...data.portfolio,
+        { name: values.name, date: values.create, link: values.link },
+      ];
+    }
+
+    try {
+      setData(prevData => ({ ...prevData, portfolio: updatedPortfolio }));
+      await server.updateUserPortfolio(id, updatedPortfolio);
+      toast.success(editingItem ? 'Успешно обновлено!' : 'Успешно добавлено!');
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error('Ошибка при добавлении/обновлении:', err);
+      toast.error('Не удалось сохранить. Попробуйте позже.');
+    }
   };
 
+  const handleDelete = async (item) => {
+    if (!data) return;
+    const updatedPortfolio = data.portfolio.filter(i => i !== item);
+    try {
+      setData(prevData => ({ ...prevData, portfolio: updatedPortfolio }));
+      await server.updateUserPortfolio(id, updatedPortfolio);
+      toast.success('Удалено успешно!');
+    } catch (err) {
+      console.error('Ошибка при удалении:', err);
+      toast.error('Не удалось удалить. Попробуйте позже.');
+    }
+  };
 
   return (
     <>
-      <div className='flex justify-between justify-items-center items-center my-6'>
-        <h2 className=''>Portfolio</h2>
-        <Button type="primary" onClick={showModal}>
+      <div className='flex justify-between items-center my-6'>
+        <h2>Portfolio</h2>
+        <Button type="primary" onClick={() => showModal()}>
           ADD
         </Button>
-        <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-          <Form
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            style={{ maxWidth: 600 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            <Form.Item
-              label="Project Name"
-              name="Name"
-              rules={[{ required: true, message: 'Please input your username!' }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label="Data create"
-              name="create"
-              rules={[{ required: true, message: 'Please input your username!' }]}
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              label="Link"
-              name="link"
-              rules={[{ required: true, message: 'Please input your username!' }]}
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item label={null}>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-        </Modal>
       </div>
-      {/* <Carousel autoplay className="w-full border rounded-xl"> */}
+
+      <Modal
+        title={editingItem ? "Edit Portfolio Item" : "Add Portfolio Item"}
+        open={isModalOpen}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Form
+          form={form}
+          name="portfolioForm"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          style={{ maxWidth: 600 }}
+          initialValues={{ remember: true }}
+          onFinish={handleSubmit}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="Project Name"
+            name="name"
+            rules={[{ required: true, message: 'Please input your project name!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Creation Date"
+            name="create"
+            rules={[{ required: true, message: 'Please input the project creation date!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Link"
+            name="link"
+            rules={[{ required: true, message: 'Please input the project link!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              {editingItem ? "Update" : "Submit"}
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+
       <div className="w-full max-w-[1142px] mx-auto py-12 flex flex-wrap justify-start items-start gap-4">
-        {courses.map((course, index) => (
-          <a
+        {data && data.portfolio && data.portfolio.map((course, index) => (
+          <div
             key={index}
-            href={course.link}
-            target="_blank"
-            rel="noopener noreferrer"
             className="group relative flex-[1_1_calc(33.333%-30px)] p-5 rounded-[28px] overflow-hidden bg-[#121212] transition-all cursor-pointer no-underline"
           >
-            <div
-              className="absolute w-[128px] h-[128px] rounded-full top-[-75px] right-[-75px] transition-transform duration-500 group-hover:scale-[10]"
-              style={{ backgroundColor: getBgColor(index) }}
-            ></div>
-            <h2 className="text-white text-2xl md:text-[30px] font-bold mb-6 relative z-10 group-hover:text-white">
-              {course.title}
-            </h2>
-            {course.startDate && (
+            <a
+              href={course.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <div
+                className="absolute w-[128px] h-[128px] rounded-full top-[-75px] right-[-75px] transition-transform duration-500 group-hover:scale-[10]"
+                style={{ backgroundColor: course.color }}
+              ></div>
+              <h2 className="text-white text-2xl md:text-[30px] font-bold mb-6 relative z-10 group-hover:text-white">
+                {course.name}
+              </h2>
               <div className="text-white text-lg relative z-10">
-                Start: <span className="font-bold text-[#f9b234] group-hover:text-white">{course.startDate}</span>
+                Created: <span className="font-bold text-[#f9b234] group-hover:text-white">{course.date}</span>
               </div>
-            )}
-          </a>
+            </a>
+            <div className="flex gap-2 mt-4 relative z-10">
+              <Button size="small" type="default" onClick={() => showModal(course)}>Edit</Button>
+              <Button size="small" danger onClick={() => handleDelete(course)}>Delete</Button>
+            </div>
+          </div>
         ))}
       </div>
-      {/* </Carousel> */}
     </>
-  )
-}
+  );
+};
 
-export default CarouselSection
+export default CarouselSection;

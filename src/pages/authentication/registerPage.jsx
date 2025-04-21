@@ -46,9 +46,9 @@ function RegisterPage() {
         userName: formData.userName,
         role: 'user'
       },
-      profile: {},
-      education: {},
-      experience: {},
+      profile: [],
+      education: [],
+      experience: [],
       skills: [],
       languages: [],
       hobbies: [],
