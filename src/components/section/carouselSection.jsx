@@ -5,7 +5,7 @@ import { server } from '../../server/server';
 import Aos from 'aos';
 import TextArea from 'antd/es/input/TextArea';
 
-const CarouselSection = () => {
+const PortfolioSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState(null);
   const [editingItem, setEditingItem] = useState(null);
@@ -183,4 +183,4 @@ const CarouselSection = () => {
   );
 };
 
-export default CarouselSection;
+export default PortfolioSection;

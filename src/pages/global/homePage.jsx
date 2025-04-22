@@ -2,8 +2,8 @@ import Aos from 'aos';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import CarouselSection from '../../components/section/carouselSection';
 import EducationSection from '../../components/section/educationSection';
+import PortfolioSection from '../../components/section/carouselSection';
 
 const HomePage = () => {
   Aos.init();
@@ -15,7 +15,7 @@ const HomePage = () => {
         theme="dark"
         autoClose={3000}
       />
-      <CarouselSection />
+      <PortfolioSection />
       <EducationSection />
     </div>
   );
