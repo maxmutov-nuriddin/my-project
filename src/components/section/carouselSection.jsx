@@ -3,6 +3,7 @@ import { Button, Modal, Form, Input } from 'antd';
 import { toast } from 'react-toastify';
 import { server } from '../../server/server';
 import Aos from 'aos';
+import TextArea from 'antd/es/input/TextArea';
 
 const CarouselSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,7 +18,7 @@ const CarouselSection = () => {
     if (item) {
       form.setFieldsValue({
         name: item.name,
-        create: item.date,
+        description: item.description,
         link: item.link,
       });
     } else {
@@ -58,13 +59,13 @@ const CarouselSection = () => {
     if (editingItem) {
       updatedPortfolio = data.portfolio.map(item =>
         item === editingItem
-          ? { name: values.name, date: values.create, link: values.link }
+          ? { name: values.name, description: values.description, link: values.link }
           : item
       );
     } else {
       updatedPortfolio = [
         ...data.portfolio,
-        { name: values.name, date: values.create, link: values.link },
+        { name: values.name, description: values.description, link: values.link },
       ];
     }
 
@@ -126,11 +127,11 @@ const CarouselSection = () => {
             <Input />
           </Form.Item>
           <Form.Item
-            label="Creation Date"
-            name="create"
-            rules={[{ required: true, message: 'Please input the project creation date!' }]}
+            label="Description"
+            name="description"
+            rules={[{ required: true, message: 'Please input the project description!' }]}
           >
-            <Input />
+            <TextArea />
           </Form.Item>
           <Form.Item
             label="Link"
@@ -155,7 +156,7 @@ const CarouselSection = () => {
             className="group relative flex-[1_1_calc(33.333%-30px)] p-5 rounded-[28px] overflow-hidden bg-[#121212] transition-all cursor-pointer no-underline"
           >
             <a
-              href={"https://" + course.link}
+              href={course.link}
               target="_blank"
               rel="noopener noreferrer"
               className="block"
@@ -168,7 +169,7 @@ const CarouselSection = () => {
                 {course.name}
               </h2>
               <div className="text-white text-lg relative z-10">
-                Created: <span className="font-bold text-[#f9b234] group-hover:text-white">{course.date}</span>
+                Created: <span className="font-bold text-[#f9b234] group-hover:text-white">{course.description}</span>
               </div>
             </a>
             <div className="flex gap-2 mt-4 relative z-10">
