@@ -50,62 +50,67 @@ const ThirdPage = () => {
       return;
     }
 
-    try {
-      let user = await server.getUserById(userId);
+    toast.promise(
+      (async () => {
+        let user = await server.getUserById(userId);
 
-      // Если пользователь не найден, создаём новый объект
-      if (!user) {
-        user = {
-          user: {
-            firstName: values.FirstName,
-            lastName: values.LastName,
-            userName: values.username,
-            role: "user"
-          },
-          profile: {
-            TextArea: values.TextArea,
-            GitHubLink: values.GitHubLink,
-            InstagramLink: values.InstagramLink,
-            TelegramLink: values.TelegramLink
-          },
-          education: {},
-          experience: {},
-          skills: [],
-          languages: [],
-          hobbies: [],
-          date: Math.floor(Date.now() / 1000),
-          password: "1234",
-          portfolio: []
-        };
-        await server.createUser(user);
-        toast.success("Пользователь создан.");
-      } else {
-        // Если profile нет — создаём объект
-        if (!user.profile) {
-          user.profile = {};
+        // Если пользователь не найден, создаём новый объект
+        if (!user) {
+          user = {
+            user: {
+              firstName: values.FirstName,
+              lastName: values.LastName,
+              userName: values.username,
+              role: "user"
+            },
+            profile: {
+              TextArea: values.TextArea,
+              GitHubLink: values.GitHubLink,
+              InstagramLink: values.InstagramLink,
+              TelegramLink: values.TelegramLink
+            },
+            education: {},
+            experience: {},
+            skills: [],
+            languages: [],
+            hobbies: [],
+            date: Math.floor(Date.now() / 1000),
+            password: "1234",
+            portfolio: []
+          };
+          await server.createUser(user);
+          toast.success("Пользователь создан.");
+        } else {
+          // Если profile нет — создаём объект
+          if (!user.profile) {
+            user.profile = {};
+          }
+
+          // Обновляем profile с новыми значениями
+          user.profile.TextArea = values.TextArea;
+          user.profile.GitHubLink = values.GitHubLink;
+          user.profile.InstagramLink = values.InstagramLink;
+          user.profile.TelegramLink = values.TelegramLink;
+
+          // Обновляем базовую информацию о пользователе
+          user.user.firstName = values.FirstName;
+          user.user.lastName = values.LastName;
+          user.user.userName = values.username;
+
+          await server.updateUser(userId, user);
+          toast.success("Пользователь обновлён.");
         }
 
-        // Обновляем profile с новыми значениями
-        user.profile.TextArea = values.TextArea;
-        user.profile.GitHubLink = values.GitHubLink;
-        user.profile.InstagramLink = values.InstagramLink;
-        user.profile.TelegramLink = values.TelegramLink;
-
-        // Обновляем базовую информацию о пользователе
-        user.user.firstName = values.FirstName;
-        user.user.lastName = values.LastName;
-        user.user.userName = values.username;
-
-        await server.updateUser(userId, user);
-        toast.success("Пользователь обновлён.");
+        toast.success("Данные успешно сохранены!");
+      })(),
+      {
+        loading: 'Сохранение данных...',
+        success: 'Данные успешно сохранены!',
+        error: 'Ошибка при сохранении данных!',
       }
-
-      toast.success("Данные успешно сохранены!");
-    } catch (error) {
-      console.error("Ошибка при сохранении:", error);
-      toast.error("Ошибка при сохранении данных!");
-    }
+    );
   };
+
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
