@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 
 import EducationSection from '../../components/section/educationSection';
 import PortfolioSection from '../../components/section/portfolioSection';
+import ExperienceSection from '../../components/section/experienceSection';
 
 const HomePage = () => {
   Aos.init();
@@ -17,6 +18,7 @@ const HomePage = () => {
       />
       <PortfolioSection />
       <EducationSection />
+      <ExperienceSection />
     </div>
   );
 }

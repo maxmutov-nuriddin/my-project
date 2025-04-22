@@ -173,4 +173,32 @@ export const server = {
             throw error;
         }
     },
+    updateUserExperience: async (id, updatedExperience) => {
+        try {
+            const user = await server.getUserById(id); // Fetch the user by ID
+
+            if (!user) {
+                throw new Error(`Пользователь с id=${id} не найден.`);
+            }
+
+            // Update the education of the user
+            user.experience = updatedExperience;
+
+            // Now send the updated user data back to the server
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user) // Send the updated user object
+            });
+
+            if (!response.ok) {
+                throw new Error(`Ошибка при обновлении портфолио пользователя с id=${id}: ${response.statusText}`);
+            }
+
+            return await response.json(); // Return the updated user data
+        } catch (error) {
+            console.error("Ошибка при обновлении портфолио пользователя:", error);
+            throw error;
+        }
+    },
 };
