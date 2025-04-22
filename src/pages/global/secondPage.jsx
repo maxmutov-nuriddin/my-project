@@ -2,7 +2,8 @@ import Aos from 'aos';
 import 'aos/dist/aos.css';
 import React, { useEffect, useState } from 'react';
 import { server } from '../../server/server';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast, { Toaster } from 'react-hot-toast';
 
 const SecondPage = () => {
   const [data, setData] = useState(null);

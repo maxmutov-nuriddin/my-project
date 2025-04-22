@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { server } from '../../server/server';
 import { Button, Form, Input } from 'antd';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast, { Toaster } from 'react-hot-toast';
 import Aos from 'aos';
 
 function RegisterPage() {
@@ -72,7 +71,7 @@ function RegisterPage() {
 
   return (
     <>
-      <div  className="h-screen w-full flex items-center justify-center register-box">
+      <div className="h-screen w-full flex items-center justify-center register-box">
         <div className="p-8 rounded-3xl shadow-2xl backdrop-blur-lg bg-white/10 text-white text-2xl bg-sky-50 max-w-[90%] sm:max-w-md w-full sm:text-2xl text-base justify-items-center" data-aos="zoom-in">
           <Form form={form} onFinish={handleSubmit} variant="underlined"
             style={{
@@ -146,7 +145,11 @@ function RegisterPage() {
 
         </div>
       </div>
-      <ToastContainer position="bottom-right" theme="dark" autoClose={3000} />
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        autoClose={3000}
+      />
     </>
   );
 }

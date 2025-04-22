@@ -1,6 +1,6 @@
 import Aos from 'aos';
 import React from 'react';
-import { ToastContainer } from 'react-toastify';
+import { Toaster } from 'react-hot-toast';
 
 import EducationSection from '../../components/section/educationSection';
 import PortfolioSection from '../../components/section/portfolioSection';
@@ -11,9 +11,9 @@ const HomePage = () => {
 
   return (
     <div data-aos="zoom-in">
-      <ToastContainer
-        position="bottom-right"
-        theme="dark"
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
         autoClose={3000}
       />
       <PortfolioSection />

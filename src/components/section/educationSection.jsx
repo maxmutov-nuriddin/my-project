@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, Form, Input } from 'antd';
-import { toast } from 'react-toastify';
+import toast, { Toaster } from 'react-hot-toast';
 import { server } from '../../server/server';
 import Aos from 'aos';
 
