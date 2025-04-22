@@ -69,29 +69,39 @@ const EducationSection = () => {
       ];
     }
 
-    try {
-      setData(prevData => ({ ...prevData, education: updatedEducation }));
-      await server.updateUserEducation(id, updatedEducation);
-      toast.success(editingItem ? 'Успешно обновлено!' : 'Успешно добавлено!');
-      setIsModalOpen(false);
-    } catch (err) {
-      console.error('Ошибка при добавлении/обновлении:', err);
-      toast.error('Не удалось сохранить. Попробуйте позже.');
-    }
+    toast.promise(
+      (async () => {
+        setData(prevData => ({ ...prevData, education: updatedEducation }));
+        await server.updateUserEducation(id, updatedEducation);
+      })(),
+      {
+        loading: 'Сохранение данных...',
+        success: editingItem ? 'Успешно обновлено!' : 'Успешно добавлено!',
+        error: 'Не удалось сохранить. Попробуйте позже.',
+      }
+    );
+    setIsModalOpen(false);
   };
+
 
   const handleDelete = async (item) => {
     if (!data) return;
+
     const updatedEducation = data.education.filter(i => i !== item);
-    try {
-      setData(prevData => ({ ...prevData, education: updatedEducation }));
-      await server.updateUserEducation(id, updatedEducation);
-      toast.success('Удалено успешно!');
-    } catch (err) {
-      console.error('Ошибка при удалении:', err);
-      toast.error('Не удалось удалить. Попробуйте позже.');
-    }
+
+    toast.promise(
+      (async () => {
+        setData(prevData => ({ ...prevData, education: updatedEducation }));
+        await server.updateUserEducation(id, updatedEducation);
+      })(),
+      {
+        loading: 'Удаление...',
+        success: 'Удалено успешно!',
+        error: 'Не удалось удалить. Попробуйте позже.',
+      }
+    );
   };
+
 
   return (
     <>
