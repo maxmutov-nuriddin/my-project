@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, Form, Input } from 'antd';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { server } from '../../server/server';
 import Aos from 'aos';
 import TextArea from 'antd/es/input/TextArea';
@@ -32,7 +32,7 @@ const ExperienceSection = () => {
     setIsModalOpen(false);
   };
 
-  const onFinishFailed = errorInfo => {
+  const onFinishFailed = (errorInfo) => {
     toast.error('Failed:', errorInfo);
   };
 
@@ -58,40 +58,57 @@ const ExperienceSection = () => {
 
     let updatedExperience;
     if (editingItem) {
-      updatedExperience = data.experience.map(item =>
+      updatedExperience = data.experience.map((item) =>
         item === editingItem
-          ? { projectName: values.projectName, technologies: values.technologies, startDate: values.startDate, endDate: values.endDate, }
+          ? {
+            projectName: values.projectName,
+            technologies: values.technologies,
+            startDate: values.startDate,
+            endDate: values.endDate,
+          }
           : item
       );
     } else {
       updatedExperience = [
         ...data.experience,
-        { projectName: values.projectName, technologies: values.technologies, startDate: values.startDate, endDate: values.endDate, },
+        {
+          projectName: values.projectName,
+          technologies: values.technologies,
+          startDate: values.startDate,
+          endDate: values.endDate,
+        },
       ];
     }
 
-    try {
-      setData(prevData => ({ ...prevData, experience: updatedExperience }));
-      await server.updateUserExperience(id, updatedExperience);
-      toast.success(editingItem ? 'Успешно обновлено!' : 'Успешно добавлено!');
-      setIsModalOpen(false);
-    } catch (err) {
-      console.error('Ошибка при добавлении/обновлении:', err);
-      toast.error('Не удалось сохранить. Попробуйте позже.');
-    }
+    toast.promise(
+      (async () => {
+        setData((prevData) => ({ ...prevData, experience: updatedExperience }));
+        await server.updateUserExperience(id, updatedExperience);
+      })(),
+      {
+        loading: 'Сохранение данных...',
+        success: editingItem ? 'Успешно обновлено!' : 'Успешно добавлено!',
+        error: 'Не удалось сохранить. Попробуйте позже.',
+      }
+    );
+    setIsModalOpen(false);
   };
 
   const handleDelete = async (item) => {
     if (!data) return;
-    const updatedExperience = data.experience.filter(i => i !== item);
-    try {
-      setData(prevData => ({ ...prevData, experience: updatedExperience }));
-      await server.updateUserExperience(id, updatedExperience);
-      toast.success('Удалено успешно!');
-    } catch (err) {
-      console.error('Ошибка при удалении:', err);
-      toast.error('Не удалось удалить. Попробуйте позже.');
-    }
+    const updatedExperience = data.experience.filter((i) => i !== item);
+
+    toast.promise(
+      (async () => {
+        setData((prevData) => ({ ...prevData, experience: updatedExperience }));
+        await server.updateUserExperience(id, updatedExperience);
+      })(),
+      {
+        loading: 'Удаление...',
+        success: 'Удалено успешно!',
+        error: 'Не удалось удалить. Попробуйте позже.',
+      }
+    );
   };
 
   return (
@@ -122,7 +139,7 @@ const ExperienceSection = () => {
         >
           <Form.Item
             label="Project Name"
-            name="name"
+            name="projectName"
             rules={[{ required: true, message: 'Please input your project name!' }]}
           >
             <Input />
@@ -130,7 +147,7 @@ const ExperienceSection = () => {
           <Form.Item
             label="Technologies"
             name="technologies"
-            rules={[{ required: true, message: 'Please input the project technologies"!' }]}
+            rules={[{ required: true, message: 'Please input the project technologies!' }]}
           >
             <TextArea />
           </Form.Item>
@@ -138,16 +155,15 @@ const ExperienceSection = () => {
           <Form.Item
             label="Start Date"
             name="startDate"
-            rules={[{ required: true, message: 'Please input the project creation date!' }]}
+            rules={[{ required: true, message: 'Please input the project start date!' }]}
           >
             <Input />
           </Form.Item>
 
-
           <Form.Item
             label="End Date"
             name="endDate"
-            rules={[{ required: true, message: 'Please input the project creation date!' }]}
+            rules={[{ required: true, message: 'Please input the project end date!' }]}
           >
             <Input />
           </Form.Item>
@@ -161,7 +177,7 @@ const ExperienceSection = () => {
       </Modal>
 
       <div className="w-full max-w-[1142px] mx-auto py-12 flex flex-wrap justify-start items-start gap-4">
-        {data && data.experience && data.experience.map((course, index) => (
+        {data && data.experience && data.experience.map((experience, index) => (
           <div
             key={index}
             className="group relative flex-[1_1_calc(33.333%-30px)] p-5 rounded-[28px] overflow-hidden bg-[#121212] transition-all cursor-pointer no-underline"
@@ -169,24 +185,24 @@ const ExperienceSection = () => {
             <div>
               <div
                 className="absolute w-[128px] h-[128px] rounded-full top-[-75px] right-[-75px] transition-transform duration-500 group-hover:scale-[10]"
-                style={{ backgroundColor: course.color }}
+                style={{ backgroundColor: experience.color }}
               ></div>
               <h2 className="text-white text-2xl md:text-[30px] font-bold mb-6 relative z-10 group-hover:text-white">
-                {course.projectName}
+                {experience.projectName}
               </h2>
               <div className="text-white text-lg relative z-10">
-                Technologies: <span className="font-bold text-[#f9b234] group-hover:text-white">{course.technologies}</span>
+                Technologies: <span className="font-bold text-[#f9b234] group-hover:text-white">{experience.technologies}</span>
               </div>
               <div className="text-white text-lg relative z-10">
-                Start date: <span className="font-bold text-[#f9b234] group-hover:text-white">{course.startDate}</span>
+                Start date: <span className="font-bold text-[#f9b234] group-hover:text-white">{experience.startDate}</span>
               </div>
               <div className="text-white text-lg relative z-10">
-                End date: <span className="font-bold text-[#f9b234] group-hover:text-white">{course.endDate}</span>
+                End date: <span className="font-bold text-[#f9b234] group-hover:text-white">{experience.endDate}</span>
               </div>
             </div>
             <div className="flex gap-2 mt-4 relative z-10">
-              <Button size="small" type="default" onClick={() => showModal(course)}>Edit</Button>
-              <Button size="small" danger onClick={() => handleDelete(course)}>Delete</Button>
+              <Button size="small" type="default" onClick={() => showModal(experience)}>Edit</Button>
+              <Button size="small" danger onClick={() => handleDelete(experience)}>Delete</Button>
             </div>
           </div>
         ))}
