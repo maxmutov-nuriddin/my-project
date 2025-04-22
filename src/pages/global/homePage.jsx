@@ -3,7 +3,7 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import EducationSection from '../../components/section/educationSection';
-import PortfolioSection from '../../components/section/carouselSection';
+import PortfolioSection from '../../components/section/portfolioSection';
 
 const HomePage = () => {
   Aos.init();
