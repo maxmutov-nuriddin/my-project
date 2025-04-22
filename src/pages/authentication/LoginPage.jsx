@@ -32,17 +32,28 @@ function LoginPage() {
   };
 
   const handleSubmit = async () => {
-    const user = await checkLoginCredentials(formData.userName, formData.password);
-    if (user) {
-      toast.success('Вход успешен! Добро пожаловать!');
-      localStorage.setItem('authToken', user.id);
-      setTimeout(() => {
-        navigate('/home');
-        window.location.reload();
-      }, 1500);
-    } else {
-      toast.error('Неверный логин или пароль!');
-    }
+    toast.promise(
+      checkLoginCredentials(formData.userName, formData.password),
+      {
+        loading: 'Проверка данных...',
+        success: (user) => {
+          if (user) {
+            toast.success('Вход успешен! Добро пожаловать!');
+            localStorage.setItem('authToken', user.id);
+            setTimeout(() => {
+              navigate('/home');
+              window.location.reload();
+            }, 1500);
+          } else {
+            toast.error('Неверный логин или пароль!');
+          }
+        },
+        error: (err) => {
+          console.error('Ошибка при входе:', err);
+          return 'Не удалось выполнить вход. Попробуйте позже.';
+        },
+      }
+    );
   };
 
   const handleRegister = () => {
@@ -57,19 +68,21 @@ function LoginPage() {
 
   Aos.init();
 
-
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} autoClose={3000} />
       <div className="h-screen w-full flex items-center justify-center login-box">
-        <div className="p-8 rounded-3xl shadow-2xl backdrop-blur-lg bg-white/10 text-white text-2xl bg-sky-50 max-w-[90%] sm:max-w-md w-full sm:text-2xl text-base justify-items-center " data-aos="zoom-in">
+        <div
+          className="p-8 rounded-3xl shadow-2xl backdrop-blur-lg bg-white/10 text-white text-2xl bg-sky-50 max-w-[90%] sm:max-w-md w-full sm:text-2xl text-base justify-items-center"
+          data-aos="zoom-in"
+        >
           <Form
             form={form}
             onFinish={handleSubmit}
             onFinishFailed={handleFinishFailed}
             variant="underlined"
             style={{
-              width: "auto"
+              width: 'auto',
             }}
           >
             <Form.Item
@@ -77,14 +90,14 @@ function LoginPage() {
               rules={[{ required: true, message: 'Пожалуйста, введите имя пользователя!' }]}
             >
               <Input
-                className='ant_input'
+                className="ant_input"
                 name="userName"
                 placeholder="Имя пользователя"
                 value={formData.userName}
                 onChange={handleChange}
                 style={{
                   backgroundColor: 'transparent',
-                  color: 'white'
+                  color: 'white',
                 }}
               />
             </Form.Item>
@@ -94,24 +107,28 @@ function LoginPage() {
               rules={[{ required: true, message: 'Пожалуйста, введите пароль!' }]}
             >
               <Input.Password
-                className='ant__input__password'
+                className="ant__input__password"
                 name="password"
                 placeholder="Пароль"
                 value={formData.password}
                 onChange={handleChange}
                 style={{
                   backgroundColor: 'transparent',
-                  color: 'white'
+                  color: 'white',
                 }}
               />
             </Form.Item>
 
             <Form.Item>
-              <div className='login-box_button'>
+              <div className="login-box_button">
                 <Button className="button" type="primary" htmlType="submit">
                   Войти
                 </Button>
-                <Button type="button" onClick={handleRegister} style={{ marginLeft: 10, color: "white" }}>
+                <Button
+                  type="button"
+                  onClick={handleRegister}
+                  style={{ marginLeft: 10, color: 'white' }}
+                >
                   Зарегистрироваться
                 </Button>
               </div>
