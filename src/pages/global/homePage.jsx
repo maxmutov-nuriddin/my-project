@@ -3,6 +3,7 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import CarouselSection from '../../components/section/carouselSection';
+import EducationSection from '../../components/section/educationSection';
 
 const HomePage = () => {
   Aos.init();
@@ -15,6 +16,7 @@ const HomePage = () => {
         autoClose={3000}
       />
       <CarouselSection />
+      <EducationSection />
     </div>
   );
 }
