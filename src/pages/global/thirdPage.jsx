@@ -138,8 +138,8 @@ const ThirdPage = () => {
               <Input style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='Username' className='ant_input' />
             </Form.Item>
 
-            <Form.Item name="TextArea" rules={[{ required: true, message: 'Please input TextArea!' }]}>
-              <Input style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='TextArea' className='ant_input' />
+            <Form.Item name="TextArea" rules={[{ required: true, message: 'Please input about!' }]}>
+              <Input style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='About' className='ant_input' />
             </Form.Item>
 
             <Form.Item name="GitHubLink" rules={[{ required: true, message: 'Please input GitHubLink!' }]}>
