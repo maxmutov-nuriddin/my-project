@@ -3,6 +3,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import Aos from 'aos';
 import React, { useEffect } from 'react';
 import { server } from '../../server/server';
+import Password from 'antd/es/input/Password';
 
 const ThirdPage = () => {
   const [form] = Form.useForm();
@@ -25,7 +26,8 @@ const ThirdPage = () => {
             TextArea: user.profile?.TextArea || '',  // Используем profile.TextArea если он существует
             GitHubLink: user.profile?.GitHubLink || '', // Аналогично для остальных полей
             InstagramLink: user.profile?.InstagramLink || '',
-            TelegramLink: user.profile?.TelegramLink || ''
+            TelegramLink: user.profile?.TelegramLink || '',
+            password: user.password || ''
           });
         } else {
           toast.error("Пользователь не найден.");
@@ -91,11 +93,13 @@ const ThirdPage = () => {
           user.profile.GitHubLink = values.GitHubLink;
           user.profile.InstagramLink = values.InstagramLink;
           user.profile.TelegramLink = values.TelegramLink;
+          user.password = values.password;
 
           // Обновляем базовую информацию о пользователе
           user.user.firstName = values.FirstName;
           user.user.lastName = values.LastName;
           user.user.userName = values.username;
+          user.password = values.password;
 
           await server.updateUser(userId, user);
           toast.success("Пользователь обновлён.");
@@ -115,6 +119,10 @@ const ThirdPage = () => {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
+  const isAuthenticatedRole = () => {
+    return localStorage.getItem('userRole');
+  }
 
   return (
     <>
@@ -139,22 +147,30 @@ const ThirdPage = () => {
             <Form.Item name="username" rules={[{ required: true, message: 'Please input your username!' }]}>
               <Input style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='Username' className='ant_input' />
             </Form.Item>
+            {isAuthenticatedRole() !== 'admin' && (
+              <>
+                <Form.Item name="TextArea" rules={[{ required: true, message: 'Please input about!' }]}>
+                  <Input style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='About' className='ant_input' />
+                </Form.Item>
 
-            <Form.Item name="TextArea" rules={[{ required: true, message: 'Please input about!' }]}>
-              <Input style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='About' className='ant_input' />
+                <Form.Item name="GitHubLink" rules={[{ required: true, message: 'Please input GitHubLink!' }]}>
+                  <Input style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='GitHubLink' className='ant_input' />
+                </Form.Item>
+
+                <Form.Item name="InstagramLink" rules={[{ required: true, message: 'Please input InstagramLink!' }]}>
+                  <Input style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='InstagramLink' className='ant_input' />
+                </Form.Item>
+
+                <Form.Item name="TelegramLink" rules={[{ required: true, message: 'Please input TelegramLink!' }]}>
+                  <Input style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='TelegramLink' className='ant_input' />
+                </Form.Item>
+              </>
+            )}
+
+            <Form.Item name="password" rules={[{ required: true, message: 'Please input Password!' }]}>
+              <Password style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='Password' className='ant_input' />
             </Form.Item>
 
-            <Form.Item name="GitHubLink" rules={[{ required: true, message: 'Please input GitHubLink!' }]}>
-              <Input style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='GitHubLink' className='ant_input' />
-            </Form.Item>
-
-            <Form.Item name="InstagramLink" rules={[{ required: true, message: 'Please input InstagramLink!' }]}>
-              <Input style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='InstagramLink' className='ant_input' />
-            </Form.Item>
-
-            <Form.Item name="TelegramLink" rules={[{ required: true, message: 'Please input TelegramLink!' }]}>
-              <Input style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='TelegramLink' className='ant_input' />
-            </Form.Item>
 
             <Form.Item label={null} className='flex justify-center items-center'>
               <Button type="primary" onClick={handleLogout}>Log Out</Button>

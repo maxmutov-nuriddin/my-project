@@ -31,6 +31,10 @@ function LoginPage() {
     }
   };
 
+  const isAuthenticatedRole = () => {
+    return localStorage.getItem('userRole');
+  }
+
   const handleSubmit = async () => {
     toast.promise(
       checkLoginCredentials(formData.userName, formData.password),
@@ -42,7 +46,11 @@ function LoginPage() {
             localStorage.setItem('authToken', user.id);
             localStorage.setItem('userRole', user.user.role)
             setTimeout(() => {
-              navigate('/home');
+              if (isAuthenticatedRole() === 'admin') {
+                navigate('/admin');
+              } else {
+                navigate('/home');
+              }
               window.location.reload();
             }, 1500);
           } else {
