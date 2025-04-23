@@ -6,27 +6,26 @@ import UserTable from '../../components/section/adminPanelData';
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    const checkAdmin = async () => {
-      try {
-        const users = await server.getAllUsers();
-        setUsers(users);
-      } catch (err) {
-        console.error('Ошибка при проверке пользователей:', err);
-        toast.error('Ошибка сервера при проверке данных пользователей.');
-      }
-    };
+  const fetchUsers = async () => {
+    try {
+      const users = await server.getAllUsers();
+      setUsers(users);
+    } catch (err) {
+      console.error('Ошибка при получении пользователей:', err);
+      toast.error('Ошибка при загрузке пользователей.');
+    }
+  };
 
-    checkAdmin();
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
   const handleUpdate = async (updatedData, id) => {
     const updatedUser = updatedData.find(user => user.id === id);
-    
     if (!updatedUser) return;
 
     try {
-      const result = await server.updateUser(id,updatedUser);
+      const result = await server.updateUser(id, updatedUser);
       toast.success('Роль пользователя обновлена.');
       console.log('Обновлённый пользователь:', result);
     } catch (err) {
@@ -35,8 +34,19 @@ const AdminPanel = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await server.deleteUser(id);
+      toast.success('Пользователь удалён.');
+      fetchUsers();
+    } catch (err) {
+      console.error('Ошибка при удалении пользователя:', err);
+      toast.error('Не удалось удалить пользователя.');
+    }
+  };
+
   return (
-    <UserTable users={users} onUpdate={handleUpdate} />
+    <UserTable users={users} onUpdate={handleUpdate} onDelete={handleDelete} />
   );
 };
 
