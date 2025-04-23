@@ -46,13 +46,13 @@ const LayoutPage = () => {
         position="top-center"
         reverseOrder={false}
       />
-      <Content className='custom-content mt-13'>
+      <Content className='custom-content my-13'>
         <div className="container">
           <Outlet />
         </div>
       </Content>
 
-      <Footer className="custom-content" style={{ textAlign: "center" }} >
+      <Footer className="custom-content fixed w-full z-40 inset-x-0 bottom-0" style={{ textAlign: "center" }} >
         <span className="layout-span__text">CV base</span> ©{new Date().getFullYear()} Created by <span className="layout-span__text"><u>FWB</u></span>
       </Footer>
     </Layout>
