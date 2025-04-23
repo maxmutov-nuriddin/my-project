@@ -14,7 +14,7 @@ const items = [
   },
   {
     key: "2",
-    label: <Link to="/Second">Second</Link>,
+    label: <Link to="/Second">About</Link>,
   },
   {
     key: "3",
