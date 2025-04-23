@@ -72,7 +72,7 @@ const PortfolioSection = () => {
     toast.promise(
       (async () => {
         setData(prevData => ({ ...prevData, portfolio: updatedPortfolio }));
-        await server.updateUserEducation(id, updatedPortfolio);
+        await server.updateUserPortfolio(id, updatedPortfolio);
       })(),
       {
         loading: 'Сохранение данных...',
@@ -89,7 +89,7 @@ const PortfolioSection = () => {
     toast.promise(
       (async () => {
         setData(prevData => ({ ...prevData, portfolio: updatedPortfolio }));
-        await server.updateUserEducation(id, updatedPortfolio);
+        await server.updateUserPortfolio(id, updatedPortfolio);
       })(),
       {
         loading: 'Удаление...',

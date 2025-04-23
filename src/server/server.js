@@ -56,7 +56,7 @@ export const server = {
                 console.log(`Пользователь с id=${id} не найден. LocalStorage очищен.`);
             }
 
-            return user;
+            return user;    
 
         } catch (error) {
             console.error("Ошибка при получении пользователя по ID:", error);
