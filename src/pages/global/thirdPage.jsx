@@ -168,7 +168,7 @@ const ThirdPage = () => {
             )}
 
             <Form.Item name="password" rules={[{ required: true, message: 'Please input Password!' }]}>
-              <Password style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='Password' className='ant_input' />
+              <Password style={{ backgroundColor: 'transparent', color: 'white' }} placeholder='Password' className='ant__input__password' />
             </Form.Item>
 
 
