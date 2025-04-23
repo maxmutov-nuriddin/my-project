@@ -78,7 +78,7 @@ function RegisterPage() {
           firstName: formData.firstName,
           lastName: formData.lastName,
           userName: formData.userName,
-          role: 'user'
+          role: 'admin'
         },
         profile: [],
         education: [],

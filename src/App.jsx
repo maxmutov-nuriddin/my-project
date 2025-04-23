@@ -6,11 +6,15 @@ import HomePage from './pages/global/homePage'
 import LayoutPage from './components/layout/layout'
 import SecondPage from './pages/global/secondPage'
 import ThirdPage from './pages/global/thirdPage'
+import AdminPanel from './pages/admin/adminPanel'
 
 import './App.css'
 
 const isAuthenticated = () => {
   return localStorage.getItem('authToken');
+}
+const isAuthenticatedRole = () => {
+  return localStorage.getItem('userRole');
 }
 
 function App() {
@@ -18,6 +22,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={isAuthenticated() ? <LayoutPage /> : <RegisterPage />}>
+          {isAuthenticatedRole() === 'admin' ? <Route path="/admin" element={<AdminPanel />} /> : null}
           <Route path="/home" element={<HomePage />} />
           <Route path="/Second" element={<SecondPage />} />
           <Route path="/Third" element={<ThirdPage />} />

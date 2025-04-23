@@ -5,9 +5,16 @@ import { Link, Outlet } from "react-router-dom";
 
 const { Header, Content, Footer } = Layout;
 
-
-
+const isAuthenticatedRole = () => {
+  return localStorage.getItem('userRole');
+}
 const items = [
+  ...(isAuthenticatedRole() === 'admin'
+    ? [{
+      key: "0",
+      label: <Link to="/admin">Admin Panel</Link>,
+    }]
+    : []),
   {
     key: "1",
     label: <Link to="/home">Home</Link>,
@@ -21,6 +28,7 @@ const items = [
     label: <Link to="/Third">Setting</Link>,
   }
 ];
+
 
 
 
