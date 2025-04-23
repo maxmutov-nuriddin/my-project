@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import EducationSection from '../../components/section/educationSection';
 import PortfolioSection from '../../components/section/portfolioSection';
 import ExperienceSection from '../../components/section/experienceSection';
+import SkillsSection from '../../components/section/skillsSection';
 
 const HomePage = () => {
   Aos.init();
@@ -19,6 +20,7 @@ const HomePage = () => {
       <PortfolioSection />
       <EducationSection />
       <ExperienceSection />
+      <SkillsSection />
     </div>
   );
 }

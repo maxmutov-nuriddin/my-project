@@ -5,7 +5,7 @@ import { server } from '../../server/server';
 import Aos from 'aos';
 import TextArea from 'antd/es/input/TextArea';
 
-const ExperienceSection = () => {
+const SkillsSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState(null);
   const [editingItem, setEditingItem] = useState(null);
@@ -17,10 +17,8 @@ const ExperienceSection = () => {
     setEditingItem(item);
     if (item) {
       form.setFieldsValue({
-        projectName: item.projectName,
-        technologies: item.technologies,
-        startDate: item.startDate,
-        endDate: item.endDate,
+        skillsName: item.skillsName,
+        percent: item.percent,
       });
     } else {
       form.resetFields();
@@ -56,34 +54,30 @@ const ExperienceSection = () => {
   const handleSubmit = async (values) => {
     if (!data) return;
 
-    let updatedExperience;
+    let updatedSkills;
     if (editingItem) {
-      updatedExperience = data.experience.map((item) =>
+      updatedSkills = data.skills.map((item) =>
         item === editingItem
           ? {
-            projectName: values.projectName,
-            technologies: values.technologies,
-            startDate: values.startDate,
-            endDate: values.endDate,
+            skillsName: values.skillsName,
+            percent: values.percent,
           }
           : item
       );
     } else {
-      updatedExperience = [
-        ...data.experience,
+      updatedSkills = [
+        ...data.skills,
         {
-          projectName: values.projectName,
-          technologies: values.technologies,
-          startDate: values.startDate,
-          endDate: values.endDate,
+          skillsName: values.skillsName,
+          percent: values.percent,
         },
       ];
     }
 
     toast.promise(
       (async () => {
-        setData((prevData) => ({ ...prevData, experience: updatedExperience }));
-        await server.updateUserExperience(id, updatedExperience);
+        setData((prevData) => ({ ...prevData, skills: updatedSkills }));
+        await server.updateUserSkills(id, updatedSkills);
       })(),
       {
         loading: 'Сохранение данных...',
@@ -96,12 +90,12 @@ const ExperienceSection = () => {
 
   const handleDelete = async (item) => {
     if (!data) return;
-    const updatedExperience = data.experience.filter((i) => i !== item);
+    const updatedSkills = data.skills.filter((i) => i !== item);
 
     toast.promise(
       (async () => {
-        setData((prevData) => ({ ...prevData, experience: updatedExperience }));
-        await server.updateUserExperience(id, updatedExperience);
+        setData((prevData) => ({ ...prevData, skills: updatedSkills }));
+        await server.updateUserSkills(id, updatedSkills);
       })(),
       {
         loading: 'Удаление...',
@@ -114,21 +108,21 @@ const ExperienceSection = () => {
   return (
     <>
       <div className='flex justify-between items-center my-6'>
-        <h2>Experience</h2>
+        <h2>Skills</h2>
         <Button type="primary" onClick={() => showModal()}>
           ADD
         </Button>
       </div>
 
       <Modal
-        title={editingItem ? "Edit Experience Item" : "Add Experience Item"}
+        title={editingItem ? "Edit skills Item" : "Add skills Item"}
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
       >
         <Form
           form={form}
-          name="experienceForm"
+          name="skillsForm"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           style={{ maxWidth: 600 }}
@@ -138,34 +132,18 @@ const ExperienceSection = () => {
           autoComplete="off"
         >
           <Form.Item
-            label="Project Name"
-            name="projectName"
-            rules={[{ required: true, message: 'Please input your project name!' }]}
+            label="Skills Name"
+            name="skillsName"
+            rules={[{ required: true, message: 'Please input your skills name!' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Technologies"
-            name="technologies"
-            rules={[{ required: true, message: 'Please input the project technologies!' }]}
+            label="percent"
+            name="percent"
+            rules={[{ required: true, message: 'Please input the project percent!' }]}
           >
             <TextArea />
-          </Form.Item>
-
-          <Form.Item
-            label="Start Date"
-            name="startDate"
-            rules={[{ required: true, message: 'Please input the project start date!' }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="End Date"
-            name="endDate"
-            rules={[{ required: true, message: 'Please input the project end date!' }]}
-          >
-            <Input />
           </Form.Item>
 
           <Form.Item>
@@ -177,7 +155,7 @@ const ExperienceSection = () => {
       </Modal>
 
       <div className="w-full max-w-[1142px] mx-auto py-12 flex flex-wrap justify-start items-start gap-4">
-        {data && data.experience && data.experience.map((experience, index) => (
+        {data && data.skills && data.skills.map((skills, index) => (
           <div
             key={index}
             className="group relative flex-[1_1_calc(33.333%-30px)] p-5 rounded-[28px] overflow-hidden bg-[#121212] transition-all cursor-pointer no-underline"
@@ -185,24 +163,18 @@ const ExperienceSection = () => {
             <div>
               <div
                 className="absolute w-[128px] h-[128px] rounded-full top-[-75px] right-[-75px] transition-transform duration-500 group-hover:scale-[10]"
-                style={{ backgroundColor: experience.color }}
+                style={{ backgroundColor: skills.color }}
               ></div>
               <h2 className="text-white text-2xl md:text-[30px] font-bold mb-6 relative z-10 group-hover:text-white">
-                {experience.projectName}
+                {skills.skillsName}
               </h2>
               <div className="text-white text-lg relative z-10">
-                Technologies: <span className="font-bold text-[#f9b234] group-hover:text-white">{experience.technologies}</span>
-              </div>
-              <div className="text-white text-lg relative z-10">
-                Start date: <span className="font-bold text-[#f9b234] group-hover:text-white">{experience.startDate}</span>
-              </div>
-              <div className="text-white text-lg relative z-10">
-                End date: <span className="font-bold text-[#f9b234] group-hover:text-white">{experience.endDate}</span>
+                percent: <span className="font-bold text-[#f9b234] group-hover:text-white">{skills.percent}</span>
               </div>
             </div>
             <div className="flex gap-2 mt-4 relative z-10">
-              <Button size="small" type="default" onClick={() => showModal(experience)}>Edit</Button>
-              <Button size="small" danger onClick={() => handleDelete(experience)}>Delete</Button>
+              <Button size="small" type="default" onClick={() => showModal(skills)}>Edit</Button>
+              <Button size="small" danger onClick={() => handleDelete(skills)}>Delete</Button>
             </div>
           </div>
         ))}
@@ -211,4 +183,4 @@ const ExperienceSection = () => {
   );
 };
 
-export default ExperienceSection;
+export default SkillsSection;
