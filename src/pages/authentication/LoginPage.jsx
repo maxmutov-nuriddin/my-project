@@ -40,6 +40,7 @@ function LoginPage() {
           if (user) {
             toast.success('Вход успешен! Добро пожаловать!');
             localStorage.setItem('authToken', user.id);
+            localStorage.setItem('userRole', user.user.role)
             setTimeout(() => {
               navigate('/home');
               window.location.reload();
