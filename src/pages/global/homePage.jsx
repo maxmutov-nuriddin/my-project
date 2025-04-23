@@ -6,6 +6,7 @@ import EducationSection from '../../components/section/educationSection';
 import PortfolioSection from '../../components/section/portfolioSection';
 import ExperienceSection from '../../components/section/experienceSection';
 import SkillsSection from '../../components/section/skillsSection';
+import HobbiesSection from '../../components/section/hobbiesSection';
 
 const HomePage = () => {
   Aos.init();
@@ -21,6 +22,7 @@ const HomePage = () => {
       <EducationSection />
       <ExperienceSection />
       <SkillsSection />
+      <HobbiesSection />
     </div>
   );
 }

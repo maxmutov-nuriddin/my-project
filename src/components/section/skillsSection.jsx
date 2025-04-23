@@ -141,7 +141,7 @@ const SkillsSection = () => {
           <Form.Item
             label="percent"
             name="percent"
-            rules={[{ required: true, message: 'Please input the project percent!' }]}
+            rules={[{ required: true, message: 'Please input the percent!' }]}
           >
             <TextArea />
           </Form.Item>
