@@ -1,5 +1,6 @@
 import { Layout, Menu, Button } from "antd";
 import Aos from "aos";
+import { Toaster } from "react-hot-toast";
 import { Link, Outlet } from "react-router-dom";
 
 const { Header, Content, Footer } = Layout;
@@ -41,7 +42,10 @@ const LayoutPage = () => {
           className="layout-box"
         />
       </Header>
-
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
       <Content className='custom-content mt-13'>
         <div className="container">
           <Outlet />

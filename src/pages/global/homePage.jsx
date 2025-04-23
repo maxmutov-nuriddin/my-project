@@ -14,11 +14,6 @@ const HomePage = () => {
 
   return (
     <div data-aos="zoom-in">
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-        autoClose={3000}
-      />
       <PortfolioSection />
       <EducationSection />
       <ExperienceSection />
