@@ -30,7 +30,7 @@ const SecondPage = () => {
 
 
   return (
-    <div data-aos="zoom-in">
+    <div data-aos="zoom-in" className='pt-8'>
       <section>
         <div>
           <img src="" alt="user image" />
