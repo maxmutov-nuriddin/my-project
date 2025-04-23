@@ -10,24 +10,29 @@ const isAuthenticatedRole = () => {
 }
 const items = [
   ...(isAuthenticatedRole() === 'admin'
-    ? [{
-      key: "0",
-      label: <Link to="/admin">Admin Panel</Link>,
-    }]
-    : []),
-  {
-    key: "1",
-    label: <Link to="/home">Home</Link>,
-  },
-  {
-    key: "2",
-    label: <Link to="/Second">About</Link>,
-  },
+    ? [
+      {
+        key: "0",
+        label: <Link to="/admin">Admin Panel</Link>,
+      },
+    ]
+    : [
+      {
+        key: "1",
+        label: <Link to="/home">Home</Link>,
+      },
+      {
+        key: "2",
+        label: <Link to="/Second">About</Link>,
+      },
+    ]),
   {
     key: "3",
-    label: <Link to="/Third">Setting</Link>,
-  }
+    label: <Link to="/Third">Setting</Link>, // 👈 Всегда добавляется
+  },
 ];
+
+
 
 
 
