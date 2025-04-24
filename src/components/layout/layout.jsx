@@ -43,7 +43,7 @@ const LayoutPage = () => {
       <Header className="layout-box fixed w-full z-40">
         <div className="logo ">
           <Link to="/home">
-            <img src="/src/assets/ChatGPT Image 17 апр. 2025 г., 00_35_42 (1) (1).png" alt="Logo" style={{ height: "70px" }} />
+            <img src="/src/assets/portfolioLogo.png" alt="Logo" style={{ height: "70px" }} />
           </Link>
         </div>
         <Menu
