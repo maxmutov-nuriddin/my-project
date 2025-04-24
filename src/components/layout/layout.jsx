@@ -34,9 +34,6 @@ const items = [
 
 
 
-
-
-
 const LayoutPage = () => {
   return (
     <Layout className="">
